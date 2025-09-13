@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вайбкодинг × Борис Герн</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --accent: #a78bfa;
+            --neon: #fbbf24;
+            --dark: #0f0f23;
+            --card: #1a1a3e;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1e1b4b 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            animation: float 15s infinite ease-in-out reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        /* Header */
+        .header {
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--accent), var(--neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .intro {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            padding: 0 2rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .highlight {
+            color: var(--neon);
+            font-weight: 600;
+        }
+
+        /* Current Focus Section */
+        .current-focus {
+            max-width: 1000px;
+            margin: 2rem auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .focus-title {
+            font-size: 1.8rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.6s;
+        }
+
+        .city-section {
+            padding: 3rem 2rem;
+            background: rgba(26, 26, 62, 0.4);
+            border-radius: 30px;
+            border: 1px solid rgba(163, 139, 250, 0.2);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.7s;
+        }
+
+        .city-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .city-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .city-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-dim);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .transformation {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .city-state {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .city-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            filter: grayscale(0);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--accent);
+            animation: slideRight 1.5s infinite;
+        }
+
+        @keyframes slideRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            padding: 1.5rem 2rem;
+            background: rgba(163, 139, 250, 0.1);
+            border-radius: 15px;
+            text-align: center;
+            font-style: italic;
+            color: var(--text-dim);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.9s;
+        }
+
+        /* Projects Section */
+        .projects {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 2rem 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(26, 26, 62, 0.6);
+            border: 1px solid rgba(163, 139, 250, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .project-card:nth-child(1) { animation-delay: 1.0s; }
+        .project-card:nth-child(2) { animation-delay: 1.1s; }
+        .project-card:nth-child(3) { animation-delay: 1.2s; }
+        .project-card:nth-child(4) { animation-delay: 1.3s; }
+        .project-card:nth-child(5) { animation-delay: 1.4s; }
+        .project-card:nth-child(6) { animation-delay: 1.5s; }
+        .project-card:nth-child(7) { animation-delay: 1.6s; }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(163, 139, 250, 0.1));
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px rgba(163, 139, 250, 0.3);
+        }
+
+        .project-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .project-description {
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .project-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .project-link:hover {
+            gap: 1rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            text-align: center;
+            padding: 3rem 2rem 4rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(163, 139, 250, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .transformation {
+                flex-direction: column;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <header class="header">
+        <h1>Вайбкодинг × Творчество</h1>
+        <p class="subtitle">Когда код становится искусством, а идеи — реальностью</p>
+        <div class="intro">
+            Привет! Я <span class="highlight">Борис Герн</span>, AI лид в Додо Пицца. 
+            Верю, что сейчас лучшее время создавать — барьеры ниже как никогда, 
+            всё ограничено только фантазией, вдохновением и любопытством. 
+            Каждый проект ниже — это эксперимент на стыке технологий и человеческих потребностей.
+        </div>
+    </header>
+
+    <section class="current-focus">
+        <h2 class="focus-title">💫 Мой текущий фокус</h2>
+        <div class="city-section">
+            <div class="city-content">
+                <h3 class="city-title">🏰 Метафора города: как мы трансформируем Додо</h3>
+                <p class="city-text">
+                    Сегодня наша компания – как добротный средневековый город. 
+                    Он уже живет, строит, торгует. Но многое делается вручную: 
+                    код пашут мотыгой, данные носят ведрами, а однотипные ответы пишут от руки.
+                    <br><br>
+                    <strong>Моя цель сейчас — засетапить все так, чтобы Додо стала AI-first компанией.</strong>
+                </p>
+                
+                <div class="transformation">
+                    <div class="city-state">
+                        <div class="city-emoji">🏰</div>
+                        <h4>Вчера</h4>
+                        <p>Ручной труд<br>Медленные процессы</p>
+                    </div>
+                    
+                    <div class="arrow">→</div>
+                    
+                    <div class="city-state">
+                        <div class="city-emoji">🏗️</div>
+                        <h4>Сегодня</h4>
+                        <p>Проводим "электричество знаний"<br>Открываем рынок инструментов</p>
+                    </div>
+                    
+                    <div class="arrow">→</div>
+                    
+                    <div class="city-state">
+                        <div class="city-emoji">🌆</div>
+                        <h4>Завтра</h4>
+                        <p>Разработчик — машинист комбайна<br>Аналитик — инженер инсайтов</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects">
+        <h2 class="section-title">📦 Мои вайбкодинг-проекты</h2>
+        
+        <div class="disclaimer">
+            💡 Из кейсов, которые легко можно потыкать, сложно будет что-то показать — 
+            многое я убрал с прода после экспериментов. 
+            Что-то осталось в виде заметок в моём тг-канале.
+        </div>
+        
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-icon">📄</div>
+                <h3 class="project-title">AI-бот для резюме жены</h3>
+                <p class="project-description">
+                    Жена работает в рекрутинговом агентстве, где резюме приходят в хаосе форматов. 
+                    За вечер в Cursor собрал телеграм-бота: принимает любые резюме, 
+                    автоматически приводит к единому формату агентства, выдает готовый брендированный PDF.
+                </p>
+                <a href="https://t.me/borisbeard/31" class="project-link" target="_blank">
+                    Подробнее →
+                </a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">🔮</div>
+                <h3 class="project-title">ИИ-Оракул 2027</h3>
+                <p class="project-description">
+                    Фановый AI-сервис предсказаний о будущем профессий. 
+                    Выбираешь специальность → отвечаешь на вопросы → получаешь прогноз на 2 года 
+                    и оценку готовности к изменениям. ChatGPT API под капотом.
+                </p>
+                <a href="https://t.me/borisbeard/36" class="project-link" target="_blank">
+                    Подробнее →
+                </a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">🧠</div>
+                <h3 class="project-title">Personal OS / Supernova</h3>
+                <p class="project-description">
+                    AI операционная система для управления жизнью. Начал с методологии в ChatGPT, 
+                    затем создал веб-прототип Supernova: голосовой онбординг за 5 минут, 
+                    автогенерация миссии и задач, адаптивный планировщик дня. 
+                    Сейчас моя OS встроена напрямую в Cursor, пользуюсь каждый день.
+                </p>
+                <a href="https://t.me/borisbeard/42" class="project-link" target="_blank">
+                    Подробнее →
+                </a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">🚀</div>
+                <h3 class="project-title">Курс по вайбкодингу</h3>
+                <p class="project-description">
+                    Запустил авторский курс по созданию продуктов без кода через AI. 
+                    6 видео на примере Replit, первый продукт уже после первого урока. 
+                    Для продактов и маркетологов, которые хотят быстро проверять идеи. 
+                    Лендинг курса тоже собрал с помощью AI.
+                </p>
+                <a href="https://t.me/borisbeard/35" class="project-link" target="_blank">
+                    Подробнее →
+                </a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">🎓</div>
+                <h3 class="project-title">AI-обучение в Додо</h3>
+                <p class="project-description">
+                    Запустили AI-движуху в компании: лекция на 200+ человек, 
+                    Summer AI Camp (52 заявки на 20 мест), AI Case Club для решения задач. 
+                    Участники создали реальные инструменты для работы за 5 воркшопов.
+                </p>
+                <a href="https://t.me/borisbeard/50" class="project-link" target="_blank">
+                    Подробнее →
+                </a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">🎮</div>
+                <h3 class="project-title">Детективная игра для сына</h3>
+                <p class="project-description">
+                    Когда оказались в разных странах, создал интерактивный детектив "Кто украл метеорит?". 
+                    ChatGPT → сюжет, Gemini → веб-игра, Veo3 → видео-развязка. 
+                    2 часа работы = новый формат общения на расстоянии.
+                </p>
+                <a href="https://t.me/borisbeard/52" class="project-link" target="_blank">
+                    Подробнее →
+                </a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-icon">📊</div>
+                <h3 class="project-title">AI-аналитика NPS</h3>
+                <p class="project-description">
+                    MVP для анализа 6000+ отзывов Додо. Оптимизировал обработку с 60 до 3 минут. 
+                    Агентная архитектура, умная категоризация, интерактивные дашборды. 
+                    Python + FastAPI + Claude Code.
+                </p>
+                <a href="https://t.me/borisbeard/65" class="project-link" target="_blank">
+                    Подробнее →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <a href="https://t.me/borisbeard" class="cta-button" target="_blank">
+            Мой канал про AI и эксперименты
+        </a>
+    </section>
+</body>
+</html>
